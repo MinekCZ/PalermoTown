@@ -72,12 +72,18 @@ class Commands extends Command
             case "join":
                 if(!$sender instanceof Player) { $sender->sendMessage("§cNot Available in console!"); return; }
 
-                //TODO: Implement
+                if(isset($args[1]) && isset($this->palermoTown->arenas[$args[1]])) 
+                {
+                    $this->palermoTown->arenas[$args[1]]->JoinPlayer($sender);
+                }
                 break;
             case "leave":
                 if(!$sender instanceof Player) { $sender->sendMessage("§cNot Available in console!"); return; }
 
-                //TODO Implement
+                foreach($this->palermoTown->arenas as $arena) 
+                {
+                    $arena->LeavePlayer($sender);
+                }
                 break;
 
             default:
