@@ -28,10 +28,10 @@ class ArenaTask extends Task
         {
             case Arena::state_lobby:
 
-                if(count($this->arena->players) <= 1) 
+                if(count($this->arena->players) == 0) 
                 {
                     $this->arena->lobbyTime = 15;
-                    $this->arena->sendActionBar("§7Waiting for player...");
+                    $this->arena->sendActionBar(Lang::get("waitig_players"));
                     break;
                 }
 
@@ -42,7 +42,13 @@ class ArenaTask extends Task
 
                 foreach($this->arena->players as $player) 
                 {
-                    $player->sendActionBarMessage("§7Murder: {$this->arena->percents_final[$player->getName()]["murder"]}% §7Sherif: {$this->arena->percents_final[$player->getName()]["sherif"]}%  | Starting in: §a{$this->arena->lobbyTime}");
+                    $player->sendActionBarMessage(Lang::format("lobby_starting_tip", 
+                    ["{murder_percent}", "{sherif_percent}", "{time}"], 
+                    [
+                    $this->arena->percents_final[$player->getName()]["murder"], 
+                    $this->arena->percents_final[$player->getName()]["sherif"], 
+                    $this->arena->lobbyTime
+                    ]));
                 }
                 
                 
@@ -55,7 +61,11 @@ class ArenaTask extends Task
 
                 $this->arena->preGameTime--;
 
-                $this->arena->sendActionBar("§7Murder get their sword in: §c{$this->arena->preGameTime}");
+                $this->arena->sendActionBar(Lang::format("pregame_tip", 
+                    ["{time}"], 
+                    [
+                    $this->arena->preGameTime
+                ]));
                 
 
                 if($this->arena->preGameTime == 0) 
@@ -72,7 +82,12 @@ class ArenaTask extends Task
                 /** @var Player */
                 foreach($this->arena->players + $this->arena->spectators as $player) 
                 {
-                    $player->sendActionBarMessage("§7Role: {$this->arena->GetRolePretty($player)} §7| Time left: §a{$this->formatTime($this->arena->gameTime)}");
+                    $player->sendActionBarMessage(Lang::format("game_tip", 
+                        ["{role}", "{time}"], 
+                        [
+                        $this->arena->GetRolePretty($player), 
+                        $this->arena->gameTime
+                    ]));
                 }
 
                 if($this->arena->gameTime == 0) 
@@ -84,7 +99,11 @@ class ArenaTask extends Task
             case Arena::state_ending:
 
                 $this->arena->endTime--;
-                $this->arena->sendActionBar("§7Teleporting to lobby in: {$this->arena->endTime}");
+                $this->arena->sendActionBar(Lang::format("endgame_tip", 
+                    ["{time}"], 
+                    [
+                    $this->arena->endTime
+                ]));
 
                 if($this->arena->endTime == 0) 
                 {

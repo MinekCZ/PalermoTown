@@ -29,6 +29,10 @@ class PalermoTown extends PluginBase
         $this->commands = new Commands($this);
         $this->getServer()->getCommandMap()->register("palermotown", $this->commands, "PalermoTown");
 
+        $this->saveResource("lang.yml");
+        $lang = new Config($this->getDataFolder() . "lang.yml", Config::YAML);
+        Lang::$lang = $lang->getAll();
+
         $this->Load();
     }
 
