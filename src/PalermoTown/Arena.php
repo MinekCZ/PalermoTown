@@ -224,17 +224,37 @@ class Arena
         $player->getInventory()->clearAll();
         $player->getOffHandInventory()->clearAll();
 
-        $this->sendMessage("§7[§a+§7] {$player->getName()}");
-        $player->sendMessage("\n§7Welcome to §cPalermo§7Town!");
+        $this->sendMessage(Lang::format("arena_join", 
+            ["{player}"], 
+            [
+            $player->getName()
+        ]));
 
-        $this->percents[$player->getName()]["murder"] = rand(0, 10);
-        $this->percents[$player->getName()]["sherif"] = rand(0, 10);
+        $player->sendMessage(Lang::format("arena_welcome", 
+            ["{player}"], 
+            [
+            $player->getName()
+        ]));
+
+        $this->percents[$player->getName()]["murder"] = rand(0, 20);
+        $this->percents[$player->getName()]["sherif"] = rand(0, 20);
     }
 
     public function KillPlayer(Player $player, Player $by = null) 
     {   
-        if($by != null) $player->sendMessage("\n§7You've been killed by {$this->GetRolePretty($by)}\n§7§oYou're now spectator");
-        if($by == null) $player->sendMessage("§7You've have been killed.\n§7§oYou're now spectator");
+        if($by != null) 
+        {
+
+            $player->sendMessage(Lang::format("killed_by_now_spectator", 
+                ["{role}"], 
+                [
+                $this->GetRolePretty($by)
+            ]));
+
+        } else 
+        {
+            $player->sendMessage(Lang::get("killed_now_spectator"));
+        }
 
         //TODO:: Check $this->murder-> & $this->sherif->
         if($player == $this->murder) 
@@ -368,12 +388,12 @@ class Arena
 
     public function GetRolePretty(Player $player) :string 
     {
-        if(isset($this->innocents[$player->getName()])) return "§aInnocent";
-        if($player == $this->murder) return "§cMurder";
-        if($player == $this->sherif) return "§bSherif";
-        if(isset($this->spectators[$player->getName()])) return "§7Spectator";
+        if(isset($this->innocents[$player->getName()])) return Lang::get("innocent");
+        if($player == $this->murder) return Lang::get("murder");
+        if($player == $this->sherif) return Lang::get("sherif");
+        if(isset($this->spectators[$player->getName()])) return Lang::get("spectator");
 
-        return "§7none";
+        return Lang::get("none");
     }
 
 
@@ -424,19 +444,19 @@ class Arena
             if($murder[0] == $player) 
             {
                 $this->murder = $player;
-                $player->sendTitle("§cMurder", "§o§7Kill all your opponents!");
+                $player->sendTitle(Lang::get("start_title_murder"), Lang::get("start_subtitle_murder"));
                 continue;
             }
 
             if($sherif[0] == $player) 
             {
                 $this->sherif = $player;
-                $player->sendTitle("§bSherif", "§o§7Kill Murder!");
+                $player->sendTitle(Lang::get("start_title_sherif"), Lang::get("start_subtitle_sherif"));
                 continue;
             }
 
             $this->innocents[$player->getName()] = $player;
-            $player->sendTitle("§aInnocent", "§o§7Survive as long as possible!");
+            $player->sendTitle(Lang::get("start_title_innocent"), Lang::get("start_subtitle_innocent"));
         }
 
 
@@ -446,25 +466,25 @@ class Arena
 
         
 
-        $this->sendMessage("\n§7> Game is starting soon!");
+        $this->sendMessage(Lang::get("game_starting_soon"));
     }
 
     public function preGameEnd() 
     {
         $this->state = self::state_game;
 
-        $this->sendMessage("\n§7> Game has started! Murder has their sword!");
+        $this->sendMessage(Lang::get("game_started"));
 
-        $this->murder->getInventory()->setItem(1, $this->GetItem(ItemIds::IRON_SWORD, 0, 1, "§cMurder's sword"));
-        $this->murder->getInventory()->setItem(2, $this->GetItem(ItemIds::BOW, 0, 1, "§o§7FakeBow"));
+        $this->murder->getInventory()->setItem(1, $this->GetItem(ItemIds::IRON_SWORD, 0, 1, Lang::get("item_murder_sword")));
+        $this->murder->getInventory()->setItem(2, $this->GetItem(ItemIds::BOW, 0, 1, Lang::get("item_murder_fakebow")));
 
 
-        $this->sherif->getInventory()->setItem(1, $this->GetItem(ItemIds::BOW, 0, 1, "§o§bSherif's bow"));
-        $this->sherif->getInventory()->setItem(2, $this->GetItem(ItemIds::ARROW, 0, 1, "§7Arrow"));
+        $this->sherif->getInventory()->setItem(1, $this->GetItem(ItemIds::BOW, 0, 1, Lang::get("item_sherif_bow")));
+        $this->sherif->getInventory()->setItem(2, $this->GetItem(ItemIds::ARROW, 0, 1, Lang::get("item_arrow")));
 
         foreach($this->innocents as $inno) 
         {
-            $inno->getInventory()->setItem(1, $this->GetItem(ItemIds::BOW, 0, 1, "§7Bow"));
+            $inno->getInventory()->setItem(1, $this->GetItem(ItemIds::BOW, 0, 1, Lang::get("item_innocent_bow")));
         }
 
 
@@ -481,20 +501,41 @@ class Arena
 
         if($this->murder == null) 
         {
-            $this->sendTitle("§aInnocents Won!");
-            $this->sendMessage("\n§cPalermo§7Town\n§7Won: §aInnocents\n§7---\n\n§cMurder: §7{$this->original_roles["murder"]->getName()} \n§bSherif: §7{$this->original_roles["sherif"]->getName()}");
+            $this->sendTitle(Lang::get("innocent_win_title"));
+            $this->sendMessage(Lang::get("prefix") . Lang::get("innocent_win_info"));
+
+            $this->sendMessage(Lang::format("win_info", 
+                        ["{murder}", "{sherif}"], 
+                        [
+                        $this->original_roles["murder"]->getName(), 
+                        $this->original_roles["sherif"]->getName()
+            ]));
         }
 
         if($this->murder != null) 
         {
             if($this->gameTime == 0) 
             {
-                $this->sendTitle("§aInnocents Won!");
-                $this->sendMessage("\n§cPalermo§7Town\n§7Won: §aInnocents\n§7---§cMurder: §7{$this->original_roles["murder"]->getName()} \n§bSherif: §7{$this->original_roles["sherif"]->getName()}");
+                $this->sendTitle(Lang::get("innocent_win_title"));
+                $this->sendMessage(Lang::get("prefix") . Lang::get("innocent_win_info"));
+
+                $this->sendMessage(Lang::format("win_info", 
+                        ["{murder}", "{sherif}"], 
+                        [
+                        $this->original_roles["murder"]->getName(), 
+                        $this->original_roles["sherif"]->getName()
+                ]));
             } else 
             {
-                $this->sendTitle("§cMurder Won!");
-                $this->sendMessage("\n§cPalermo§7Town\n§7Won: §cMurder\n§7---\n\n§cMurder: §7{$this->original_roles["murder"]->getName()} \n§bSherif: §7{$this->original_roles["sherif"]->getName()}");
+                $this->sendTitle(Lang::get("murder_win_title"));
+                $this->sendMessage(Lang::get("prefix") . Lang::get("murder_win_info"));
+
+                $this->sendMessage(Lang::format("win_info", 
+                        ["{murder}", "{sherif}"], 
+                        [
+                        $this->original_roles["murder"]->getName(), 
+                        $this->original_roles["sherif"]->getName()
+                ]));
             }
         }
     }

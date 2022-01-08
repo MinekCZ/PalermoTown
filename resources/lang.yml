@@ -38,9 +38,9 @@ win_info: "§cMurder: §7{murder} \n§bSherif: §7{sherif}"
 start_title_murder: "§cMurder"
 start_subtitle_murder: "§o§7Kill all your opponents!"
 start_title_sherif: "§bSherif"
-start_subtitle_murder: "§o§7Kill Murder!"
-start_title_sherif: "§aInnocent"
-start_subtitle_murder: "§o§7Survive as long as possible!"
+start_subtitle_sherif: "§o§7Kill Murder!"
+start_title_innocent: "§aInnocent"
+start_subtitle_innocent: "§o§7Survive as long as possible!"
 
 
 murder:    "§cMurder"
