@@ -28,7 +28,7 @@ class ArenaTask extends Task
         {
             case Arena::state_lobby:
 
-                if(count($this->arena->players) == 0) 
+                if(count($this->arena->players) <= 1) 
                 {
                     $this->arena->lobbyTime = 15;
                     $this->arena->sendActionBar("§7Waiting for player...");
