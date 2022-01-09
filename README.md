@@ -84,3 +84,6 @@ In setup mode it is possible to see all editable values using the command:
  
 # Credit me
   - If you're making video please use poggit/github link.
+
+# Video
+  [![IMAGE ALT TEXT](http://img.youtube.com/vi/bmq_-e6qfGM/0.jpg)](http://www.youtube.com/watch?v=bmq_-e6qfGM "Video Title")
