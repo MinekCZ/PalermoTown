@@ -7,6 +7,7 @@ use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\VanillaBlocks;
+use pocketmine\entity\object\ItemEntity;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
@@ -159,10 +160,18 @@ class ArenaListener implements Listener
             return;
         }
 
+        foreach($this->arena->game_world->getEntities() as $ii) 
+        {
+            if($ii instanceof ItemEntity) 
+            {
+                $ii->flagForDespawn();
+            }
+        }
+
 
         $this->arena->sherif = $entity;
         $this->arena->sherifBow = 1;
-
+        $event->cancel();
 
     }
 
@@ -205,6 +214,8 @@ class ArenaListener implements Listener
                 {
                     $player->getInventory()->setItemInHand(ItemFactory::air()); 
                 }
+
+                
                 $event->cancel();
 
                 $player->getInventory()->addItem($this->arena->GetItem(ItemIds::ARROW, 0, 1, Lang::get("item_arrow")));

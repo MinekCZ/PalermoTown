@@ -94,6 +94,16 @@ class ArenaTask extends Task
                 if($this->arena->sherifBow > 0 && $this->arena->sherif != null) 
                 {
                     $this->arena->sherifBow--;
+                    
+
+                    if($this->arena->sherif->getInventory()->getItemInHand()->getId() == ItemIds::BOW) 
+                    {
+                        // 385 max
+                        $p = ($this->arena->sherifBow / 8 * 100);
+                        $d = (385 / 100) * $p;
+
+                        $this->arena->sherif->getInventory()->setItemInHand($this->arena->GetItem(ItemIds::BOW, $d, 1, Lang::get("item_sherif_bow")));
+                    }
 
                     if($this->arena->sherifBow == 0) 
                     {
