@@ -25,6 +25,9 @@ item_arrow         : "§7Arrow"
 item_innocent_bow  : "§7Bow"
 item_ingot         : "§6§oIngot"
 
+item_cannot_use    : "§c> §7You cannot use this item!"
+item_bought_arrow  : "§6> §7You have bought arrow!"
+
 
 innocent_win_title: "§aInnocents Won!"
 innocent_win_info : "\n§7Won: §aInnocents\n§7---"

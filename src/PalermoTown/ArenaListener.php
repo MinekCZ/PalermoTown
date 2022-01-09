@@ -147,6 +147,15 @@ class ArenaListener implements Listener
 
             if($item->getCount() >= $this->arena->data["arrow_price"]) 
             {
+
+                if($player == $this->arena->murder) 
+                {
+                    $player->sendMessage(Lang::get("item_cannot_use"));
+                    $event->cancel();
+                    return;
+                }
+
+
                 $item->setCount($item->getCount() - $this->arena->data["arrow_price"]);
                 if($item->getCount() > 0) 
                 {
@@ -158,6 +167,8 @@ class ArenaListener implements Listener
                 $event->cancel();
 
                 $player->getInventory()->addItem($this->arena->GetItem(ItemIds::ARROW, 0, 1, Lang::get("item_arrow")));
+
+                $player->sendMessage(Lang::get("item_bought_arrow"));
 
                 return;
             }
