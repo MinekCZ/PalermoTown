@@ -3,6 +3,8 @@
 namespace PalermoTown;
 
 use AttachableLogger;
+use pocketmine\block\Block;
+use pocketmine\block\BlockFactory;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIdentifier;
@@ -643,9 +645,19 @@ class Arena
         return $item;
     }
 
+    public function GetBlock(int $id, int $meta) :Block 
+    {
+        return $this->GetBlockFactory()->get($id, $meta);
+    }
+
     public function GetItemFactory() :ItemFactory
     {
         return ItemFactory::getInstance();
+    }
+
+    public function GetBlockFactory() :BlockFactory 
+    {
+        return BlockFactory::getInstance();
     }
 
 

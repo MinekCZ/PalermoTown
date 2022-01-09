@@ -3,6 +3,10 @@
 
 namespace PalermoTown;
 
+use pocketmine\block\Block;
+use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockLegacyIds;
+use pocketmine\block\VanillaBlocks;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
@@ -12,7 +16,9 @@ use pocketmine\event\entity\ProjectileHitBlockEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerDropItemEvent;
 use pocketmine\event\player\PlayerExhaustEvent;
+use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\item\ItemIds;
 use pocketmine\player\Player;
 
@@ -111,5 +117,26 @@ class ArenaListener implements Listener
     public function Hunger(PlayerExhaustEvent $event) 
     {
         if($this->arena->IsInArena($event->getPlayer())) $event->cancel();
+    }
+
+    public function OnDrop(PlayerDropItemEvent $event) 
+    {
+        if($this->arena->IsInArena($event->getPlayer())) $event->cancel();
+    }
+
+
+    //Chest interact::
+    public function OnInteract(PlayerInteractEvent $event) 
+    {
+        if(!$this->arena->IsInArena($event->getPlayer())) return;
+        $player = $event->getPlayer();
+
+        if($event->getBlock()->getId() == BlockLegacyIds::CHEST) 
+        {
+            $event->cancel();
+            $player->getInventory()->addItem($this->arena->GetItem(ItemIds::GOLD_INGOT, 0, 1, Lang::get("item_ingot")));
+            $block = $this->arena->GetBlock(BlockLegacyIds::AIR, 0);
+            $this->arena->game_world->setBlock($event->getBlock()->getPosition(), $block, true);
+        }
     }
 }

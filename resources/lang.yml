@@ -23,6 +23,7 @@ item_murder_fakebow: "§7§ofakeBow"
 item_sherif_bow    : "§o§bSherif's bow"
 item_arrow         : "§7Arrow"
 item_innocent_bow  : "§7Bow"
+item_ingot         : "§6§oIngot"
 
 
 innocent_win_title: "§aInnocents Won!"
