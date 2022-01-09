@@ -57,6 +57,7 @@ In setup mode it is possible to see all editable values using the command:
   - Basic Commands:
     - /pt join <arena_name>
     - /pt leave
+    - /pt list
   - Admin commands (op only)
     - /pt admin create <arena_name>
     - /pt admin remove <arena_name>
@@ -71,8 +72,7 @@ In setup mode it is possible to see all editable values using the command:
     
 # Upcoming features
   - Map vote
-  - Chests, Gold ingots (to buy things in shop)
-  - Item shop
+  - Better item shop
   - Cosmetics
 # Known bugs
   - Works only on 4.0.0 Pocketmine version
