@@ -91,7 +91,7 @@ class ArenaTask extends Task
                     ]));
                 }
 
-                if($this->arena->sherifBow > 0) 
+                if($this->arena->sherifBow > 0 && $this->arena->sherif != null) 
                 {
                     $this->arena->sherifBow--;
 

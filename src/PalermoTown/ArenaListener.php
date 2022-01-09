@@ -12,6 +12,7 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\entity\EntityItemPickupEvent;
 use pocketmine\event\entity\ProjectileHitBlockEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\entity\ProjectileLaunchEvent;
@@ -61,15 +62,22 @@ class ArenaListener implements Listener
                 return;
             }
 
-            if($damager == $this->arena->sherif) 
+            if($damager != $this->arena->murder) 
             {
                 if($event->getCause() != EntityDamageByEntityEvent::CAUSE_PROJECTILE) 
                 {
                     $event->cancel();
                     return;
                 }
-                //$role = $this->arena->GetRole($player);
+                $role = $this->arena->GetRole($player);
+
+                
                 $this->arena->KillPlayer($player, $damager);
+
+                if($role != "Murder") 
+                {
+                    $this->arena->KillPlayer($damager, null);
+                }
                 $this->arena->CheckPlayers();
                 return;
             }
@@ -123,6 +131,39 @@ class ArenaListener implements Listener
     public function OnDrop(PlayerDropItemEvent $event) 
     {
         if($this->arena->IsInArena($event->getPlayer())) $event->cancel();
+    }
+
+    public function OnPickUp(EntityItemPickupEvent $event) 
+    {
+        $entity = $event->getEntity();
+        $item =   $event->getItem();
+
+        if(!$entity instanceof Player) return;
+        if(!$this->arena->IsInArena($entity)) return;
+
+        if($entity == $this->arena->murder || $entity == $this->arena->sherif) 
+        {
+            $event->cancel();
+            return;
+        }
+
+        if($item->getId() != ItemIds::BOW) 
+        {
+            $event->cancel();
+            return;
+        }
+
+        if($this->arena->sherif != null) 
+        {
+            $event->cancel();
+            return;
+        }
+
+
+        $this->arena->sherif = $entity;
+        $this->arena->sherifBow = 1;
+
+
     }
 
 

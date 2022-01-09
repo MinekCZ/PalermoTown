@@ -270,6 +270,7 @@ class Arena
         if($player == $this->sherif) 
         {
             $this->sherif = null;
+            $this->game_world->dropItem($player->getPosition(), $this->GetItem(ItemIds::BOW, 0, 1, Lang::get("item_sherif_bow")));
         }
 
         $this->JoinSpectator($player);
