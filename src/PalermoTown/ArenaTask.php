@@ -2,6 +2,7 @@
 
 namespace PalermoTown;
 
+use pocketmine\item\ItemIds;
 use pocketmine\scheduler\Task;
 use pocketmine\player\Player;
 
@@ -88,6 +89,16 @@ class ArenaTask extends Task
                         $this->arena->GetRolePretty($player), 
                         $this->arena->gameTime
                     ]));
+                }
+
+                if($this->arena->sherifBow > 0) 
+                {
+                    $this->arena->sherifBow--;
+
+                    if($this->arena->sherifBow == 0) 
+                    {
+                        $this->arena->sherif->getInventory()->addItem($this->arena->GetItem(ItemIds::ARROW, 0, 1, Lang::get("item_arrow")));
+                    }
                 }
 
                 if($this->arena->gameTime == 0) 

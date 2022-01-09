@@ -66,6 +66,8 @@ class Arena
     public int $preGameTime;
     public int $endTime;
 
+    public int $sherifBow;
+
 
 
 
@@ -567,6 +569,7 @@ class Arena
         $this->lobbyTime = 15;
         $this->preGameTime = 10;
         $this->endTime = 10;
+        $this->sherifBow = 0;
     }
 
     public function leaveAll() 

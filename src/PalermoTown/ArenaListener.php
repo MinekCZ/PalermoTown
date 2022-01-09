@@ -10,6 +10,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\ProjectileHitBlockEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
+use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\item\ItemIds;
@@ -85,6 +86,16 @@ class ArenaListener implements Listener
     public function ProjectileHit(ProjectileHitEvent $event) 
     {
         if($this->arena->IsInArena($event->getEntity()->getOwningEntity())) $event->getEntity()->flagForDespawn();
+    }
+
+    public function ProjectileCreate(ProjectileLaunchEvent $event) 
+    {
+        $entity = $event->getEntity()->getOwningEntity();
+
+        if($this->arena->IsInArena($entity) && $entity == $this->arena->sherif) 
+        {
+            $this->arena->sherifBow = 8;
+        }
     }
 
     public function BlockBreak(BlockBreakEvent $event)  
