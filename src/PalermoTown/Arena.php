@@ -5,6 +5,7 @@ namespace PalermoTown;
 use AttachableLogger;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockLegacyIds;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIdentifier;
@@ -67,6 +68,7 @@ class Arena
     public int $lobbyTime;
     public int $preGameTime;
     public int $endTime;
+    public int $chestRefill;
 
     public int $sherifBow;
 
@@ -350,9 +352,6 @@ class Arena
 
         foreach($this->players as $player) 
         {
-            $this->percents[$player->getName()]["murder"] += $this->percents[$player->getName()]["murder"] > 1 ? rand(-1, 2) : rand(0, 2); 
-            $this->percents[$player->getName()]["sherif"] += $this->percents[$player->getName()]["sherif"] > 1 ? rand(-1, 2) : rand(0, 2); 
-
             $msum += $this->percents[$player->getName()]["murder"];
             $ssum += $this->percents[$player->getName()]["sherif"];
         }
@@ -572,6 +571,7 @@ class Arena
         $this->preGameTime = 10;
         $this->endTime = 10;
         $this->sherifBow = 0;
+        $this->chestRefill = 30;
     }
 
     public function leaveAll() 
@@ -598,6 +598,19 @@ class Arena
 
         $this->lobby_world = $this->getServer()->getWorldManager()->getWorldByName($l);
         $this->game_world  = $this->getServer()->getWorldManager()->getWorldByName($g);
+
+        $this->generateChests();
+    }
+
+    public function generateChests() 
+    {
+        $chests = $this->data["chests"];
+        
+        foreach($chests as $chest) 
+        {
+            $vec = PalermoTown::StringToVec($chests[0]);
+            $this->game_world->setBlock($vec, $this->GetBlock(BlockLegacyIds::CHEST, (int)$chests[1]), true);
+        }
     }
 
     public function sendMessage(string $msg) 
