@@ -19,6 +19,7 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDropItemEvent;
 use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\player\Player;
 
@@ -137,6 +138,29 @@ class ArenaListener implements Listener
             $player->getInventory()->addItem($this->arena->GetItem(ItemIds::GOLD_INGOT, 0, 1, Lang::get("item_ingot")));
             $block = $this->arena->GetBlock(BlockLegacyIds::AIR, 0);
             $this->arena->game_world->setBlock($event->getBlock()->getPosition(), $block, true);
+            return;
+        }
+
+        if($event->getItem()->getId() == ItemIds::GOLD_INGOT) 
+        {
+            $item = $event->getItem();
+
+            if($item->getCount() >= $this->arena->data["arrow_price"]) 
+            {
+                $item->setCount($item->getCount() - $this->arena->data["arrow_price"]);
+                if($item->getCount() > 0) 
+                {
+                    $player->getInventory()->setItemInHand($item);
+                } else 
+                {
+                    $player->getInventory()->setItemInHand(ItemFactory::air()); 
+                }
+                $event->cancel();
+
+                $player->getInventory()->addItem($this->arena->GetItem(ItemIds::ARROW, 0, 1, Lang::get("item_arrow")));
+
+                return;
+            }
         }
     }
 }

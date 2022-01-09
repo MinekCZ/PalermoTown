@@ -356,6 +356,11 @@ class Arena
             $ssum += $this->percents[$player->getName()]["sherif"];
         }
 
+        if($msum == 0 || $ssum == 0) 
+        {
+            $msum = 1;
+            $ssum = 1;
+        }
 
         foreach($this->players as $player) 
         {
@@ -608,8 +613,8 @@ class Arena
         
         foreach($chests as $chest) 
         {
-            $vec = PalermoTown::StringToVec($chests[0]);
-            $this->game_world->setBlock($vec, $this->GetBlock(BlockLegacyIds::CHEST, (int)$chests[1]), true);
+            $vec = PalermoTown::StringToVec($chest[0]);
+            $this->game_world->setBlock($vec, $this->GetBlock(BlockLegacyIds::CHEST, (int)$chest[1]), true);
         }
     }
 
