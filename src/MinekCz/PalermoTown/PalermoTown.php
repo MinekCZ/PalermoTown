@@ -1,6 +1,6 @@
 <?php
 
-namespace PalermoTown;
+namespace MinekCz\PalermoTown;
 
 use pocketmine\math\Vector3;
 use pocketmine\plugin\PluginBase;

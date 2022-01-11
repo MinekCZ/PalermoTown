@@ -1,6 +1,6 @@
 <?php
 
-namespace PalermoTown;
+namespace MinekCz\PalermoTown;
 
 use AttachableLogger;
 use pocketmine\block\Block;

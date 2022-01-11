@@ -1,7 +1,7 @@
 <?php
 
 
-namespace PalermoTown;
+namespace MinekCz\PalermoTown;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;

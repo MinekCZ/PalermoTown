@@ -1,6 +1,6 @@
 <?php
 
-namespace PalermoTown;
+namespace MinekCz\PalermoTown;
 
 use pocketmine\item\ItemIds;
 use pocketmine\scheduler\Task;

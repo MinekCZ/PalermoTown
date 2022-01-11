@@ -1,6 +1,6 @@
 <?php
 
-namespace PalermoTown;
+namespace MinekCz\PalermoTown;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
