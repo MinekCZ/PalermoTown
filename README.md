@@ -96,11 +96,11 @@ In setup mode it is possible to see all editable values using the command:
   PalermoTown::FindArena() :?Arena
   PalermoTown::GetAvailbleArenas() :array
   PalermoTown::IsInArena(Player $player) :bool
-  PalermoTown::GetArenaByPlayer() :?Arena
-  PalermoTown::StartArena() :void
-  PalermoTown::EndArena() :void
-  PalermoTown::SetTime() :void
-  PalermoTown::GetArenaWorlds() :array //[0 => gameWorld, 1 => lobbyWorld]
+  PalermoTown::GetArenaByPlayer(Player $player) :?Arena
+  PalermoTown::StartArena(Arena $arena) :void
+  PalermoTown::EndArena(Arena $arena) :void
+  PalermoTown::SetTime(Arena $arena, int $time) :void
+  PalermoTown::GetArenaWorlds(Arena $arena) :array //[0 => gameWorld, 1 => lobbyWorld]
   PalermoTown::GetAllPlayer(Arena $arena) :array //Get all players in arena including spectators
   PalermoTown::GetArenaByName(string $id) :?Arena
 
