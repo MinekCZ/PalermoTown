@@ -75,6 +75,14 @@ class Commands extends Command
                 if(isset($args[1]) && isset($this->palermoTown->arenas[$args[1]])) 
                 {
                     $this->palermoTown->arenas[$args[1]]->JoinPlayer($sender);
+                    break;
+                }
+
+                $arena = PalermoTown::FindArena();
+
+                if($arena != null) 
+                {
+                    $arena->JoinPlayer($sender);
                 }
                 break;
             case "leave":
@@ -115,6 +123,14 @@ class Commands extends Command
                 if(isset($args[1]) && isset($this->palermoTown->arenas[$args[1]])) 
                 {
                     $this->palermoTown->arenas[$args[1]]->JoinPlayer($sender);
+                    break;
+                }
+
+                $arena = PalermoTown::FindArena();
+
+                if($arena != null) 
+                {
+                    $arena->JoinPlayer($sender);
                 }
                 break;
             case "leave":

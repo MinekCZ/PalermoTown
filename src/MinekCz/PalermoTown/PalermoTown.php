@@ -3,6 +3,7 @@
 namespace MinekCz\PalermoTown;
 
 use pocketmine\math\Vector3;
+use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\world\World;
@@ -35,6 +36,199 @@ class PalermoTown extends PluginBase
 
         $this->Load();
     }
+
+    //Api::
+
+    /** 
+     * Return Availble Arena (Not full, Lobby state)
+     * | If no return NULL
+     */
+    public static function FindArena() :?Arena 
+    {
+
+        $arenas = self::Get()->arenas;
+
+        if(empty($arenas)) return null;
+
+        $final = [null, -1];
+
+        foreach($arenas as $arena) 
+        {
+            if($arena->state != Arena::state_lobby) continue;
+
+            $count = count($arena->players);
+
+            if($count >= $arena->data["slots"]) continue;
+
+
+
+            if($count > $final[1]) 
+            {
+                $final = [$arena, $count];
+            }
+        }
+
+
+        return $final[0];
+    }
+
+    /**
+     * Return all Availble Arenas (Not full, Lobby state)
+     * | If no empty array
+     * @return Arena[]
+     */
+    public static function GetAvailbleArenas() :array 
+    {
+        $final = [];
+        $arenas = self::Get()->arenas;
+
+        foreach($arenas as $arena) 
+        {
+            if($arena->state != Arena::state_lobby) continue;
+            if(count($arena->players) >= $arena->data["slots"]) continue;
+
+            array_push($final, $arena);
+        }
+
+        return $final;
+    }
+
+    /**
+     * Return true if player is in any Arena
+     * | This also return true if player is spectator
+     */
+    public static function IsInArena(Player $player) :bool 
+    {
+        $arenas = self::Get()->arenas;
+
+        foreach($arenas as $arena) 
+        {
+            if(isset($arena->players[$player->getName()]) || isset($arena->spectators[$player->getName()])) 
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Return arena in which the player is
+     * | If none return NULL
+     */
+    public static function GetArenaByPlayer(Player $player) :?Arena 
+    {
+        $arenas = self::Get()->arenas;
+
+        foreach($arenas as $arena) 
+        {
+            if(isset($arena->players[$player->getName()]) || isset($arena->spectators[$player->getName()])) 
+            {
+                return $arena;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Set Arena's lobby or preGame time to 3
+     */
+    public static function StartArena(Arena $arena) 
+    {
+        if($arena->state == Arena::state_lobby) 
+        {
+            $arena->lobbyTime = 3;
+            return;
+        }
+
+        if($arena->state == Arena::state_pregame) 
+        {
+            $arena->preGameTime = 3;
+            return;
+        }
+    }
+
+    /**
+     * Set Arena's game time to 3
+     */
+    public static function EndArena(Arena $arena) 
+    {
+        if($arena->state == Arena::state_game) 
+        {
+            $arena->gameTime = 3;
+            return;
+        }
+    }
+
+
+    /**
+     * Set time of current state
+     */
+    public static function SetTime(Arena $arena, int $time) 
+    {
+        switch($arena->state) 
+        {
+            case Arena::state_lobby:
+                $arena->lobbyTime = $time;
+                break;
+            case Arena::state_pregame:
+                $arena->preGameTime = $time;
+                break;
+            case Arena::state_game:
+                $arena->gameTime = $time;
+                break;
+            case Arena::state_ending:
+                $arena->endTime = $time;
+                break;
+        }
+    }
+
+    /**
+     * [0 => gameWorld, 1 => lobbyWorld]
+     * @return World[]
+     */
+    public static function GetArenaWorlds(Arena $arena) :array 
+    {
+        return [$arena->game_world, $arena->lobby_world];
+    }
+
+    /**
+     * Return all players including spectators
+     * @return Player[]
+     */
+    public static function GetAllPlayer(Arena $arena) :array
+    {
+        return $arena->players + $arena->spectators;
+    }
+
+    /**
+     * Return Arena by ID
+     * | If none return NULL
+     */
+    public static function GetArenaByName(string $id) :?Arena
+    {
+        $arenas = self::Get()->arenas;
+
+        if(isset($arenas[$id])) 
+        {
+            return $arenas[$id];
+        }
+
+        return null;
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     public function Load() 
     {
