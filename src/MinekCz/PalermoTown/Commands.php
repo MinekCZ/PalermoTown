@@ -370,7 +370,6 @@ class Commands extends Command
                             $sender->sendMessage($kexists . $tformat);
                             $sender->sendMessage("§c! §7Available values in this context are: \"player_pos\", \"look_block\", \"look_pos\"");
                             return;
-                            break;
                     }
 
                     if($key == "chests") 
@@ -433,11 +432,6 @@ class Commands extends Command
 
                     return;
                 }
-
-
-                break;
-
-
             case "savedata":
 
                 $config = new Config($this->getDataFolder() . "data\\" . $this->data["id"] . ".yml", Config::YAML);
