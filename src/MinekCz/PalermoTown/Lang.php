@@ -2,8 +2,6 @@
 
 namespace MinekCz\PalermoTown;
 
-use pocketmine\utils\Config;
-
 class Lang 
 {
     static array $lang;

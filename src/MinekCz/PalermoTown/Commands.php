@@ -9,7 +9,6 @@ use pocketmine\block\Block;
 use pocketmine\math\Vector3;
 use pocketmine\Server;
 use pocketmine\utils\Config;
-use pocketmine\world\World;
 
 class Commands extends Command
 {
@@ -88,12 +87,12 @@ class Commands extends Command
             case "leave":
                 if(!$sender instanceof Player) { $sender->sendMessage("§cNot Available in console!"); return; }
 
-                foreach($this->palermoTown->arenas as $arena) 
+                $arena = PalermoTown::GetArenaByPlayer($sender);
+                if($arena != null) 
                 {
                     $arena->LeavePlayer($sender);
                 }
                 break;
-
             default:
             $sender->sendMessage("\n§7Unknown argument §c\"{$args[0]}\"§7!\n§7\"/pt\" for help");
                 break;
@@ -136,7 +135,8 @@ class Commands extends Command
             case "leave":
                 if(!$sender instanceof Player) { $sender->sendMessage("§cNot Available in console!"); return; }
 
-                foreach($this->palermoTown->arenas as $arena) 
+                $arena = PalermoTown::GetArenaByPlayer($sender);
+                if($arena != null) 
                 {
                     $arena->LeavePlayer($sender);
                 }
