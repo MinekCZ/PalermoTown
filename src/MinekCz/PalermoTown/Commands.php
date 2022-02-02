@@ -57,9 +57,9 @@ class Commands extends Command
         if(count($args) == 0) {
             $sender->sendMessage(
             
-                "PalermoTown\n" .
-                "/pt join | /pt join <arena>\n" .
-                "/pt leave\n" .
+                "§cPalermoTown\n" .
+                "§o§7/pt join | /pt join <arena>\n" .
+                "§0§7/pt leave\n" .
                 ""
             );
 
@@ -455,6 +455,11 @@ class Commands extends Command
                 $config->save();
 
                 $sender->sendMessage("§7Arena §adata §7has been successfully §asaved");
+                $sender->sendMessage("§7§oMake sure to §csave level§7 \"/pt savelevel\"");
+
+
+                ArenaLoader::CheckData($sender, $this->data);
+
                 break;
 
             case "savelevel":

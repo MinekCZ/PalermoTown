@@ -246,6 +246,8 @@ class PalermoTown extends PluginBase
 
         
         $this->arenas = ArenaLoader::LoadArenas();
+
+        
     }
     
     
