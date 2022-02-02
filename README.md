@@ -86,7 +86,11 @@ In setup mode it is possible to see all editable values using the command:
   - If you're making video please use poggit/github link.
 
 # Video
+  Showcase:
   [![IMAGE ALT TEXT](http://img.youtube.com/vi/bmq_-e6qfGM/0.jpg)](http://www.youtube.com/watch?v=bmq_-e6qfGM "Watch on Youtube")
+
+  How to setup:
+  [![IMAGE ALT TEXT](http://img.youtube.com/vi/Fe01td9GhYM/0.jpg)](http://www.youtube.com/watch?v=Fe01td9GhYM "Watch on Youtube")
 
 # Api
 
