@@ -62,7 +62,7 @@ class ArenaLoader
 
     public static function LoadArenas() :array
     {
-        $files = glob(PalermoTown::$palermoTown->getDataFolder() . "data\\" . "*.yml");
+        $files = glob(PalermoTown::$palermoTown->getDataFolder() . "data" . DIRECTORY_SEPARATOR . "*.yml");
 
         
 
