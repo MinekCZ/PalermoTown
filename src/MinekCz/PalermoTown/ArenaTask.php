@@ -29,7 +29,7 @@ class ArenaTask extends Task
         {
             case Arena::state_lobby:
 
-                if(count($this->arena->players) == 0) 
+                if(count($this->arena->players) <= 1) 
                 {
                     $this->arena->lobbyTime = 15;
                     $this->arena->sendActionBar(Lang::get("waitig_players"));
@@ -89,6 +89,14 @@ class ArenaTask extends Task
                         $this->arena->GetRolePretty($player), 
                         $this->arena->gameTime
                     ]));
+                }
+
+
+                $this->arena->chestRefill--;
+
+                if($this->arena->chestRefill <= 0) 
+                {
+                    $this->arena->generateChests();
                 }
 
                 if($this->arena->sherifBow > 0 && $this->arena->sherif != null) 

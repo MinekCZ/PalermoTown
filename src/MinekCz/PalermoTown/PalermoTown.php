@@ -240,8 +240,8 @@ class PalermoTown extends PluginBase
             @mkdir($this->getDataFolder() . "data");
         }
 
-        if(!is_dir($this->getDataFolder() . "data\\saves")) {
-            @mkdir($this->getDataFolder() . "data\\saves");
+        if(!is_dir($this->getDataFolder() . "data" . DIRECTORY_SEPARATOR . "saves")) {
+            @mkdir($this->getDataFolder() . "data" . DIRECTORY_SEPARATOR . "saves");
         }
 
         
@@ -276,8 +276,8 @@ class PalermoTown extends PluginBase
 
         $level->save(true);
 
-        $levelPath = $this->getServer()->getDataPath() . "worlds" . "\\" . $level->getFolderName();
-        $target = $this->getDataFolder() . "data\\saves" . "\\" . $level->getFolderName();
+        $levelPath = $this->getServer()->getDataPath() . "worlds"  . DIRECTORY_SEPARATOR  . $level->getFolderName();
+        $target = $this->getDataFolder() . "data" . DIRECTORY_SEPARATOR . "saves"  . DIRECTORY_SEPARATOR  . $level->getFolderName();
 
         $this->getServer()->getWorldManager()->unloadWorld($level);
 
@@ -304,8 +304,8 @@ class PalermoTown extends PluginBase
 
             if($file->isFile()) 
             {
-                $filePath = $file->getPath() . "\\" . $file->getBasename();
-                $localPath = substr($file->getPath(), strlen($this->getServer()->getDataPath() . "worlds\\" . $level->getFolderName()));
+                $filePath = $file->getPath()  . DIRECTORY_SEPARATOR  . $file->getBasename();
+                $localPath = substr($file->getPath(), strlen($this->getServer()->getDataPath() . "worlds" . DIRECTORY_SEPARATOR  . $level->getFolderName()));
                 $ex = $file->getExtension();
                 $name = $file->getFilename();
                 if($ex == "log" || $name == "LOCK" || $name == "LOG") 
@@ -314,7 +314,7 @@ class PalermoTown extends PluginBase
                 }
                 var_dump($file->getFilename());
 
-                copy($filePath, $target . $localPath . "\\" . $file->getFilename());
+                copy($filePath, $target . $localPath  . DIRECTORY_SEPARATOR  . $file->getFilename());
             }
 
         }
@@ -337,7 +337,7 @@ class PalermoTown extends PluginBase
 
 
 
-        $levelpath = $this->getDataFolder() . "data\\saves\\" . $folderName;
+        $levelpath = $this->getDataFolder() . "data" . DIRECTORY_SEPARATOR . "saves" . DIRECTORY_SEPARATOR  . $folderName;
 
         if(!is_dir($levelpath)) 
         {
@@ -345,11 +345,11 @@ class PalermoTown extends PluginBase
             return false;
         }
 
-        $target = $this->getServer()->getDataPath() . "worlds\\" . $folderName;
+        $target = $this->getServer()->getDataPath() . "worlds" . DIRECTORY_SEPARATOR  . $folderName;
 
-        array_map('unlink', glob("$target\\db/*.*"));
-        array_map('unlink', glob("$target\\db/*"));
-        rmdir($target . "\\db");
+        array_map('unlink', glob("$target" . DIRECTORY_SEPARATOR . "db/*.*"));
+        array_map('unlink', glob("$target" . DIRECTORY_SEPARATOR . "db/*"));
+        rmdir($target  . DIRECTORY_SEPARATOR . "db");
 
         $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(realpath($levelpath)), \RecursiveIteratorIterator::LEAVES_ONLY);
 
@@ -361,7 +361,7 @@ class PalermoTown extends PluginBase
             
             if($file->isDir()) 
             {
-                $localPath = substr($file->getPath(), strlen($this->getDataFolder() . "data\\saves"));
+                $localPath = substr($file->getPath(), strlen($this->getDataFolder() . "data" . DIRECTORY_SEPARATOR . "saves"));
 
 
                 if(!is_dir($target . "\.." . $localPath)) {
@@ -373,7 +373,7 @@ class PalermoTown extends PluginBase
             if($file->isFile()) 
             {
                 $filePath = $file->getPath() . DIRECTORY_SEPARATOR . $file->getBasename();
-                $localPath = substr($file->getPath(), strlen($this->getDataFolder() . "data\\saves\\" . $folderName));
+                $localPath = substr($file->getPath(), strlen($this->getDataFolder() . "data" . DIRECTORY_SEPARATOR . "saves" . DIRECTORY_SEPARATOR  . $folderName));
 
                 $ex = $file->getExtension();
                 $name = $file->getFilename();
@@ -382,7 +382,7 @@ class PalermoTown extends PluginBase
                     continue;
                 }
 
-                copy($filePath, $target . $localPath . "\\" . $file->getFilename());
+                copy($filePath, $target . $localPath  . DIRECTORY_SEPARATOR  . $file->getFilename());
             }
 
         }
