@@ -276,8 +276,8 @@ class PalermoTown extends PluginBase
 
         $level->save(true);
 
-        $levelPath = $this->getServer()->getDataPath() . "worlds" . DIRECTORY_SEPARATOR . $level->getFolderName();
-        $target = $this->getDataFolder() . "data\\saves" . DIRECTORY_SEPARATOR . $level->getFolderName();
+        $levelPath = $this->getServer()->getDataPath() . "worlds" . "\\" . $level->getFolderName();
+        $target = $this->getDataFolder() . "data\\saves" . "\\" . $level->getFolderName();
 
         $this->getServer()->getWorldManager()->unloadWorld($level);
 
@@ -304,12 +304,8 @@ class PalermoTown extends PluginBase
 
             if($file->isFile()) 
             {
-                $filePath = $file->getPath() . DIRECTORY_SEPARATOR . $file->getBasename();
+                $filePath = $file->getPath() . "\\" . $file->getBasename();
                 $localPath = substr($file->getPath(), strlen($this->getServer()->getDataPath() . "worlds\\" . $level->getFolderName()));
-
-                //var_dump($localPath . DIRECTORY_SEPARATOR . $file->getFilename());
-
-                //var_dump($target . $localPath . "\\" . $file->getFilename());
                 $ex = $file->getExtension();
                 $name = $file->getFilename();
                 if($ex == "log" || $name == "LOCK" || $name == "LOG") 
@@ -328,8 +324,11 @@ class PalermoTown extends PluginBase
 
     public function loadMap(string $folderName) :bool
     {
-
-        if(!$this->getServer()->getWorldManager()->isWorldGenerated($folderName)) return false;
+        if(!$this->getServer()->getWorldManager()->isWorldGenerated($folderName)) 
+        {
+            $this->getLogger()->error("Level \"{$folderName}\" was not found in server data!");
+            return false;
+        }
 
         if($this->getServer()->getWorldManager()->isWorldLoaded($folderName)) 
         {
@@ -342,7 +341,8 @@ class PalermoTown extends PluginBase
 
         if(!is_dir($levelpath)) 
         {
-            $this->getLogger()->error("Could not load map \"$folderName\". File was not found, try save level in setup");
+            $this->getLogger()->error("Level \"{$folderName}\" was not found in game data!");
+            return false;
         }
 
         $target = $this->getServer()->getDataPath() . "worlds\\" . $folderName;

@@ -32,8 +32,8 @@ class Arena
 
 
     //Worlds::
-    public World $lobby_world;
-    public World $game_world;
+    public ?World $lobby_world = null;
+    public ?World $game_world = null;
 
 
     //State::
@@ -79,11 +79,27 @@ class Arena
         $this->palermoTown = $palermotown;
         $this->data = $data;
 
-        
+        $this->getLogger()->info("§7> Loading \"{$this->data["id"]}\"");
 
-        $this->init();
+        $status = $this->init();
 
-        if(!$this->enabled) return;
+        if(!$this->enabled) 
+        {
+            switch($status) {
+                case "null_lobby":
+                    $this->getLogger()->error("[{$this->data["id"]}.yml] > Failed to load lobby level...");
+                    break;
+                case "null_game":
+                    $this->getLogger()->error("[{$this->data["id"]}.yml] > Failed to load game level...");
+                    break;
+                default:
+                    $this->getLogger()->error("[{$this->data["id"]}.yml] > Failed to load \"{$status}\"");
+                    break;
+            }
+
+
+            return;
+        }
 
 
         $this->task = new ArenaTask($palermotown, $this);
@@ -93,16 +109,16 @@ class Arena
         $this->palermoTown->getServer()->getPluginManager()->registerEvents($this->listener, $this->palermoTown);
         
     }
-    public function init() 
+    public function init() :string
     {
-        if(!count($this->data["spawns"]) > 0) return;
-        if(!count($this->data["chests"]) > 0) return;
-        if($this->data["world_game"] == "") return;
-        if($this->data["world_lobby"] == "") return;
-        if($this->data["lobby"] == "") return;
-        if($this->data["slots"] == 0) return;
+        if(!count($this->data["spawns"]) > 0) return "spawns";
+        if(!count($this->data["chests"]) > 0) return "chests";
+        if($this->data["world_game"] == "") return "world_game";
+        if($this->data["world_lobby"] == "") return "world-lobby";
+        if($this->data["lobby"] == "") return "lobby";
+        if($this->data["slots"] == 0) return "slots";
 
-        if($this->data["name"] == "") $this->data["name"] = $this->data["id"];
+        if($this->data["name"] == "") { $this->data["name"] = $this->data["id"]; }
 
 
         
@@ -110,15 +126,15 @@ class Arena
         $this->resetMaps();
         $this->reset();
 
-        if($this->lobby_world != null && $this->game_world != null) 
-        {
-            $this->enabled = true;
-            $this->state = self::state_lobby;
+        if($this->game_world == null) return "null_game";
+        if($this->lobby_world == null) return "null_lobby";
 
-            $this->getLogger()->info("§aArena \"{$this->data["id"]}\" loaded");
-        }
+        $this->enabled = true;
+        $this->state = self::state_lobby;
 
-        
+        $this->getLogger()->info("§a> Arena \"{$this->data["id"]}\" loaded");
+
+        return "ok";
     }
 
 
