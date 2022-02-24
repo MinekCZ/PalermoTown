@@ -296,8 +296,8 @@ class PalermoTown extends PluginBase
                 $localPath = substr($file->getPath(), strlen($this->getServer()->getDataPath() . "worlds"));
 
 
-                if(!is_dir($target . "\.." . $localPath)) {
-                    @mkdir($target . "\.." . $localPath);
+                if(!is_dir($target . DIRECTORY_SEPARATOR . ".." . $localPath)) {
+                    @mkdir($target . DIRECTORY_SEPARATOR . ".." . $localPath);
                 }
                 
             }
@@ -313,6 +313,10 @@ class PalermoTown extends PluginBase
                     continue;
                 }
                 var_dump($file->getFilename());
+
+                if(!is_file($filePath)) {
+                    continue;
+                }
 
                 copy($filePath, $target . $localPath  . DIRECTORY_SEPARATOR  . $file->getFilename());
             }
@@ -347,8 +351,8 @@ class PalermoTown extends PluginBase
 
         $target = $this->getServer()->getDataPath() . "worlds" . DIRECTORY_SEPARATOR  . $folderName;
 
-        array_map('unlink', glob("$target" . DIRECTORY_SEPARATOR . "db/*.*"));
-        array_map('unlink', glob("$target" . DIRECTORY_SEPARATOR . "db/*"));
+        array_map('unlink', glob("$target" . DIRECTORY_SEPARATOR . "db" . DIRECTORY_SEPARATOR ."*.*"));
+        array_map('unlink', glob("$target" . DIRECTORY_SEPARATOR . "db". DIRECTORY_SEPARATOR ."*"));
         rmdir($target  . DIRECTORY_SEPARATOR . "db");
 
         $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(realpath($levelpath)), \RecursiveIteratorIterator::LEAVES_ONLY);
@@ -364,8 +368,8 @@ class PalermoTown extends PluginBase
                 $localPath = substr($file->getPath(), strlen($this->getDataFolder() . "data" . DIRECTORY_SEPARATOR . "saves"));
 
 
-                if(!is_dir($target . "\.." . $localPath)) {
-                    @mkdir($target . "\.." . $localPath);
+                if(!is_dir($target . DIRECTORY_SEPARATOR . ".." . $localPath)) {
+                    @mkdir($target . DIRECTORY_SEPARATOR . ".." . $localPath);
                 }
                 
             }
