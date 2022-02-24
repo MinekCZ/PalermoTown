@@ -281,6 +281,12 @@ class PalermoTown extends PluginBase
 
         $this->getServer()->getWorldManager()->unloadWorld($level);
 
+        $db = $target . DIRECTORY_SEPARATOR . "db";
+
+        if(!is_dir($db)) {
+            @mkdir($db);
+        }
+
         
         if(!is_dir($target)) {
             @mkdir($target);
