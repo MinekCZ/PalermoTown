@@ -276,17 +276,16 @@ class PalermoTown extends PluginBase
 
         $level->save(true);
 
+        $fname = $level->getFolderName();
+
         $levelPath = $this->getServer()->getDataPath() . "worlds"  . DIRECTORY_SEPARATOR  . $level->getFolderName();
         $target = $this->getDataFolder() . "data" . DIRECTORY_SEPARATOR . "saves"  . DIRECTORY_SEPARATOR  . $level->getFolderName();
 
         $this->getServer()->getWorldManager()->unloadWorld($level);
 
-        $db = $target . DIRECTORY_SEPARATOR . "db";
-
-        if(!is_dir($db)) {
-            @mkdir($db);
-        }
-
+        
+        
+        
         
         if(!is_dir($target)) {
             @mkdir($target);
@@ -300,10 +299,11 @@ class PalermoTown extends PluginBase
             if($file->isDir()) 
             {
                 $localPath = substr($file->getPath(), strlen($this->getServer()->getDataPath() . "worlds"));
+                $localPath = substr($localPath, strlen($fname)+1);
 
 
-                if(!is_dir($target . DIRECTORY_SEPARATOR . ".." . $localPath)) {
-                    @mkdir($target . DIRECTORY_SEPARATOR . ".." . $localPath);
+                if(!is_dir($target . $localPath)) {
+                    @mkdir($target . $localPath);
                 }
                 
             }
