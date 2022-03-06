@@ -35,7 +35,7 @@ murder_win_title  : "§cMurderer won!"
 murder_win_info   : "\n§7Won: §cMurderer"
 
 
-win_info: "§cMurdeerr: §7{murder} \n§bSheriff: §7{sherif}"
+win_info: "§cMurderer: §7{murder} \n§bSheriff: §7{sherif}"
 
 
 
