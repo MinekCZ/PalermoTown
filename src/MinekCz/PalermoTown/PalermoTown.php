@@ -245,9 +245,7 @@ class PalermoTown extends PluginBase
         }
 
         
-        $this->arenas = ArenaLoader::LoadArenas();
-
-        
+        $this->arenas = ArenaLoader::LoadArenas();  
     }
     
     
@@ -289,6 +287,10 @@ class PalermoTown extends PluginBase
         
         if(!is_dir($target)) {
             @mkdir($target);
+        }
+        if(!is_dir($target . DIRECTORY_SEPARATOR . "db")) 
+        {
+            @mkdir($target . DIRECTORY_SEPARATOR . "db");
         }
         $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(realpath($levelPath)), \RecursiveIteratorIterator::LEAVES_ONLY);
 
@@ -359,7 +361,11 @@ class PalermoTown extends PluginBase
 
         array_map('unlink', glob("$target" . DIRECTORY_SEPARATOR . "db" . DIRECTORY_SEPARATOR ."*.*"));
         array_map('unlink', glob("$target" . DIRECTORY_SEPARATOR . "db". DIRECTORY_SEPARATOR ."*"));
-        rmdir($target  . DIRECTORY_SEPARATOR . "db");
+        //rmdir($target  . DIRECTORY_SEPARATOR . "db");
+        if(!is_dir($target . DIRECTORY_SEPARATOR . "db")) 
+        {
+            @mkdir($target . DIRECTORY_SEPARATOR . "db");
+        }
 
         $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(realpath($levelpath)), \RecursiveIteratorIterator::LEAVES_ONLY);
 
