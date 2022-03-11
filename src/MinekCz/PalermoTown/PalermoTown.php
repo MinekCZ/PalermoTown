@@ -367,6 +367,9 @@ class PalermoTown extends PluginBase
             @mkdir($target . DIRECTORY_SEPARATOR . "db");
         }
 
+
+        //please work uwu
+
         $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(realpath($levelpath)), \RecursiveIteratorIterator::LEAVES_ONLY);
 
 
