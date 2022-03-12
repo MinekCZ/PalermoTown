@@ -1,7 +1,7 @@
 prefix: "§cPalermo§7Town"
 
 waiting_player: "§7Waiting for players..."
-lobby_starting_tip: "§cMurderer: §7{murder_percent}% §bSheriff §7{sherif_percent}% | §7Starting in: §a{time}"
+lobby_starting_tip: "§cMurderer: §7{murder_percent}% §bSheriff §7{sherif_percent}%"
 
 pregame_tip: "§7Murderer get their sword in: §c{time}"
 game_tip: "§7Role: {role} §7| §7Time left: §a{time}"
@@ -52,3 +52,8 @@ sherif:    "§bSheriff"
 innocent:  "§aInnocent"
 spectator: "§7Spectator"
 none:      "§7None"
+
+sb_map: "§7Map: {map}"
+sb_time: "§7Time: §a{time}"
+sb_role: "§7Role: {role}"
+sb_description: "§7your_ip.com"

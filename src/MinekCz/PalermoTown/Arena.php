@@ -29,6 +29,7 @@ class Arena
 
     public ArenaTask $task;
     public ArenaListener $listener;
+    public ScoreBoardManager $score;
 
 
     //Worlds::
@@ -104,6 +105,7 @@ class Arena
 
         $this->task = new ArenaTask($palermotown, $this);
         $this->listener = new ArenaListener($palermotown, $this);
+        $this->score = new ScoreBoardManager($palermotown, $this);
 
         $this->palermoTown->getScheduler()->scheduleRepeatingTask($this->task, 20);
         $this->palermoTown->getServer()->getPluginManager()->registerEvents($this->listener, $this->palermoTown);
@@ -190,8 +192,11 @@ class Arena
             $player->getArmorInventory()->clearAll();
             $player->getInventory()->clearAll();
             $player->getOffHandInventory()->clearAll();
-
+            
+            $this->score->RemoveScoreBoard($player);
             $player->teleport($this->getServer()->getWorldManager()->getDefaultWorld()->getSpawnLocation());
+            $player->isNameTagAlwaysVisible(true);
+            $player->isNameTagVisible(true);
             
         }
 
@@ -209,7 +214,12 @@ class Arena
             $player->getInventory()->clearAll();
             $player->getOffHandInventory()->clearAll();
 
+
+            $this->score->RemoveScoreBoard($player);
             $player->teleport($this->getServer()->getWorldManager()->getDefaultWorld()->getSpawnLocation());
+
+            $player->isNameTagAlwaysVisible(true);
+            $player->isNameTagVisible(true);
 
             unset($this->percents[$player->getName()]);
         }
@@ -436,6 +446,9 @@ class Arena
 
             $vec = PalermoTown::StringToVec($this->data["spawns"][array_rand($this->data["spawns"])]);
             $player->teleport(new Position($vec->x, $vec->y, $vec->z, $this->game_world));
+
+            $player->isNameTagAlwaysVisible(false);
+            $player->isNameTagVisible(false);
         }
 
 
@@ -631,6 +644,41 @@ class Arena
             $vec = PalermoTown::StringToVec($chest[0]);
             $this->game_world->setBlock($vec, $this->GetBlock(BlockLegacyIds::CHEST, (int)$chest[1]), true);
         }
+    }
+
+    public function GetTime(bool $format = false) :string
+    {
+        if($format) 
+        {
+            switch($this->state) 
+            {
+                case Arena::state_lobby:
+                    return $this->task->formatTime($this->lobbyTime);
+                case Arena::state_pregame:
+                    return $this->task->formatTime($this->preGameTime);
+                case Arena::state_game:
+                    return $this->task->formatTime($this->gameTime);
+                case Arena::state_ending:
+                    return $this->task->formatTime($this->endTime);
+            }
+        } else 
+        {
+            switch($this->state) 
+            {
+                case Arena::state_lobby:
+                    return (string)$this->lobbyTime;
+                case Arena::state_pregame:
+                    return (string)$this->preGameTime;
+                case Arena::state_game:
+                    return (string)$this->gameTime;
+                case Arena::state_ending:
+                    return (string)$this->endTime;
+            }
+        }
+
+
+        return "";
+        
     }
 
     public function sendMessage(string $msg) 
