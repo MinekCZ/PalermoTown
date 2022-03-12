@@ -195,8 +195,8 @@ class Arena
             
             $this->score->RemoveScoreBoard($player);
             $player->teleport($this->getServer()->getWorldManager()->getDefaultWorld()->getSpawnLocation());
-            $player->isNameTagAlwaysVisible(true);
-            $player->isNameTagVisible(true);
+            $player->setNameTagAlwaysVisible(true);
+            $player->setNameTagVisible(true);
             
         }
 
@@ -218,8 +218,8 @@ class Arena
             $this->score->RemoveScoreBoard($player);
             $player->teleport($this->getServer()->getWorldManager()->getDefaultWorld()->getSpawnLocation());
 
-            $player->isNameTagAlwaysVisible(true);
-            $player->isNameTagVisible(true);
+            $player->setNameTagAlwaysVisible(true);
+            $player->setNameTagVisible(true);
 
             unset($this->percents[$player->getName()]);
         }
@@ -447,8 +447,8 @@ class Arena
             $vec = PalermoTown::StringToVec($this->data["spawns"][array_rand($this->data["spawns"])]);
             $player->teleport(new Position($vec->x, $vec->y, $vec->z, $this->game_world));
 
-            $player->isNameTagAlwaysVisible(false);
-            $player->isNameTagVisible(false);
+            $player->setNameTagAlwaysVisible(false);
+            $player->setNameTagVisible(false);
         }
 
 
